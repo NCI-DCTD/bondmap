@@ -1,0 +1,34 @@
+# ── Custom Project Directories ──
+nist_data/
+source_v0/
+
+# ── Generated Models & Reports ──
+*.joblib
+*.html
+
+# ── Data Files (Optional, but recommended for large datasets) ──
+*.parquet
+*.csv
+*.tsv
+*.json
+
+# ── Python Bytecode & Cache ──
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# ── Virtual Environments ──
+.env
+.venv
+env/
+venv/
+
+# ── Jupyter Notebook Checkpoints ──
+.ipynb_checkpoints/
+
+# ── OS & IDE Files ──
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
