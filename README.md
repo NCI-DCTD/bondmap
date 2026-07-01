@@ -21,7 +21,7 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
    ```bash
    pip install -r requirements.txt
 
-3. **Download COCONUT Library:**
+3. **Download COCONUT Library**
 
 4. **Install jupyter notebook**
    ```bash
