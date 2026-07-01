@@ -27,7 +27,8 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 ADDUCTS = {
     "exact"       : 0.0,      
     "protonated"  : 1.007276, # Proton mass
-    "sodiated"    : 22.989218 # Sodium adduct mass
+    "sodiated"    : 22.989218, # Sodium adduct mass
+    "deprotonated": -1.007276, # Proton mass
 }
 
 
@@ -122,31 +123,33 @@ def process_row(rec: dict) -> Optional[Dict[str, Any]]:
         coco_id = rec.get("identifier", rec.get("id", ""))
 
         return {
-            "smiles": can_smiles,
-            "name": rec.get("name", ""),
-            "id": coco_id,
+            "smiles":                       can_smiles,
+            "name":                         rec.get("name", ""),
+            "id":                           coco_id,
             # stereoisomers are grouped by coconut id prefix
-            "parent": coco_id.split('.')[0],
-            "molecular_weight": rec.get("molecular_weight", np.nan),
-            "kingdom": rec.get("kingdom", ""),
-            "superclass": rec.get("superclass", ""),
-            "class": rec.get("class", ""),
-            "subclass": rec.get("subclass", ""),
-            "organisms": rec.get("organisms", ""),
-            "fg_set": fg_set,
-            "monoisotopic": ex_mw,
+            "parent":                       coco_id.split('.')[0],
+            "molecular_weight":             rec.get("molecular_weight", np.nan),
+            "kingdom":                      rec.get("kingdom", ""),
+            "superclass":                   rec.get("superclass", ""),
+            "class":                        rec.get("class", ""),
+            "subclass":                     rec.get("subclass", ""),
+            "organisms":                    rec.get("organisms", ""),
+            "fg_set":                       fg_set,
+            "monoisotopic":                 ex_mw,
             # field names match adduct keys
             # [M+]; set to zero if structure is neutrally charged
-            "exact": ex_mw / abs(charge) if charge > 0 else 0,
+            "exact":                        ex_mw / abs(charge) if charge > 0 else 0,
             # [M+H]
-            "protonated": ex_mw + ADDUCTS.get('protonated', 0.0) if charge == 0 else ex_mw,
+            "protonated":                   ex_mw + ADDUCTS.get('protonated', 0.0) if charge == 0 else ex_mw,
             # [M+Na]
-            "sodiated": ex_mw + ADDUCTS.get('sodiated', 0.0) if charge == 0 else ex_mw,
-            "source": "smiles_only",
-            "np_classifier_pathway": rec.get("np_classifier_pathway", ""),
-            "np_classifier_superclass": rec.get("np_classifier_superclass", ""),
-            "np_classifier_class": rec.get("np_classifier_class", ""),
-            "np_classifier_is_glycoside": rec.get("np_classifier_is_glycoside", ""),
+            "sodiated":                     ex_mw + ADDUCTS.get('sodiated', 0.0) if charge == 0 else ex_mw,
+            # [M-H]
+            "deprotonated":                 ex_mw + ADDUCTS.get('deprotonated', 0.0) if charge == 0 else ex_mw,
+            "source":                       "smiles_only",
+            "np_classifier_pathway":        rec.get("np_classifier_pathway", ""),
+            "np_classifier_superclass":     rec.get("np_classifier_superclass", ""),
+            "np_classifier_class":          rec.get("np_classifier_class", ""),
+            "np_classifier_is_glycoside":   rec.get("np_classifier_is_glycoside", ""),
         }
     except Exception as e:
         # Avoid spamming logs for bad smiles, but keep track
