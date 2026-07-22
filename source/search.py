@@ -64,13 +64,12 @@ def search_library(
     search_mw: str = "protonated",
 ) -> Tuple[pd.DataFrame, int]:
     """
-    Executes a three-stage library search using molecular weight, 
-    nitrogen estimation, and tiered recall score filtering.
+    Executes a two-stage library search using molecular weight 
+    and tiered recall score filtering.
 
     Stages:
         1. Molecular Weight Filter (within specified tolerance)
-        2. Nitrogen Rule Filter (estimates nominal mass matching)
-        3. Recall Matching Filter (ranks results by overlap of query/target FGs)
+        2. Recall Matching Filter (ranks results by overlap of query/target FGs)
 
     Args:
         query_fgs (Set[str]): Set of detected functional groups.
