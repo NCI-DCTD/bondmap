@@ -17,7 +17,7 @@ from scipy.sparse.linalg import spsolve
 
 # Third-party parsers
 from brukeropusreader import read_file
-from jcamp import jcamp_readfile
+import jcamp
 
 # Local imports
 from smiles_processing import smi_to_canon
@@ -80,7 +80,7 @@ class Spectrum:
                 lxv = ab_param["LXV"]
                 wn = np.linspace(fxv, lxv, len(ab))
             case ".jdx":
-                data = jcamp_readfile(self.spec_path)
+                data = jcamp.jcamp_reader(self.spec_path)
                 wn = data['x']
                 ab = data['y']
             case _:

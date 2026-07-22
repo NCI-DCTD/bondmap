@@ -5,7 +5,7 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 ## Prerequisites
 - Python 3.11 or later
 - Local copy of the COCONUT library (https://coconut.naturalproducts.net/download)
-  (developed/tested against the May 2026 CSV release)
+  (developed/tested against the May 2026 CSV release but newer versions work)
 
 ## Installation
 
