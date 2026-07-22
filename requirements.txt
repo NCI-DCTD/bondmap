@@ -2,6 +2,7 @@
 numpy
 pandas
 scipy
+fastparquet
 
 # Machine Learning
 scikit-learn

@@ -17,7 +17,7 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 
 2. **Create and activate a virtual environment:**
 ```bash
-   python -m venv venv
+   python -m venv venv           # or python3 depending on environment
    source venv/bin/activate      # macOS/Linux
    venv\Scripts\activate         # Windows
 ```
