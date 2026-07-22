@@ -32,3 +32,6 @@ venv/
 Thumbs.db
 .vscode/
 .idea/
+
+#  Exceptions
+!training_data/smiles_to_file_v2.csv

@@ -226,6 +226,18 @@ class TrainingData:
                 
         return spectra
 
+    def add_spectra(self, smiles: str, fpath: str | Path):
+        try:
+            self.spectra.append(
+                Spectrum(
+                    spec_path=fpath,
+                    smiles=smi_to_canon(smiles),
+                    sample_id=rec['filename']
+                )
+            )
+        except Exception as e:
+            logging.warning(f"Could not load {fpath}: {e}")
+
     def size(self) -> int:
         """
         Returns the number of successfully loaded spectra.

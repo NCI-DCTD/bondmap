@@ -36,11 +36,12 @@ class SpectIRmodeling:
 
     def __init__(
         self,
-        training_data: Optional[TrainingData] = None,
-        n_points: int = 16,
+        training_data:   Optional[TrainingData] = None,
+        n_points:        int = 16,
         min_pos_samples: int = 5,
-        threshold: float = 0.4,
-        model_path: str | Path = "../stored/rf_multioutput_model.joblib"
+        threshold:       float = 0.4,
+        model_path:      str | Path = "../stored/rf_multioutput_model.joblib",
+        model_params:    Dict = { "n_estimators": 200, "max_depth": 24, "min_samples_leaf": 3 }
     ):
         """
         Initializes the model. If training data is provided, a new model is 
@@ -57,6 +58,7 @@ class SpectIRmodeling:
         self.min_pos_samples = min_pos_samples
         self.threshold = threshold
         self.model_path = Path(model_path)
+        self.model_params = model_params
 
         # Case A: Training data is provided -> Retrain and Save
         if training_data is not None:
@@ -91,7 +93,8 @@ class SpectIRmodeling:
             "labels": self.labels,
             "n_points": self.n_points,
             "min_pos_samples": self.min_pos_samples,
-            "threshold": self.threshold
+            "threshold": self.threshold,
+            "model_params": self.model_params
         }
         joblib.dump(state, self.model_path)
         logging.info(f"Successfully saved model and metadata to '{self.model_path}'!")
@@ -225,13 +228,10 @@ class SpectIRmodeling:
 
     def _define_classifier(
         self,
-        n_estimators: int = 200,
-        max_depth: int = 24,
-        class_weight: str = "balanced",
-        random_state: int = 42,
-        n_jobs: int = -1,
-        min_samples_leaf: int = 3,
-        oob_score: bool = True
+        class_weight:     str = "balanced",
+        random_state:     int = 42,
+        n_jobs:           int = -1,
+        oob_score:        bool = True
     ) -> MultiOutputClassifier:
         """
         Defines the MultiOutput Random Forest architecture.
@@ -242,12 +242,12 @@ class SpectIRmodeling:
         # Random forest handles multilabel imbalance reasonably well
         # class_weight='balanced' helps for rare FGs
         base = RandomForestClassifier(
-            n_estimators=n_estimators,
-            max_depth=max_depth,
+            n_estimators= self.model_params['n_estimators'],
+            max_depth=self.model_params['max_depth'],
             class_weight=class_weight,
             random_state=random_state,
             n_jobs=1,  # Keep as 1 to allow MultiOutputClassifier to handle n_jobs
-            min_samples_leaf=min_samples_leaf,
+            min_samples_leaf=self.model_params['min_samples_leaf'],
             oob_score=oob_score,
         )
         return MultiOutputClassifier(base, n_jobs=n_jobs)
