@@ -171,7 +171,8 @@ class Spectrum:
         
         for _ in range(n_iter):
             W = diags(w, 0)
-            Z = spsolve(W + lam * D.T @ D, w * self.abs_nobaseline)
+            A = (W + lam * D.T @ D).tocsc()
+            Z = spsolve(A, w * self.abs_nobaseline)
             w = np.where(self.abs_nobaseline > Z, p, 1 - p)
             
         return Z
