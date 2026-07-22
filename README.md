@@ -28,17 +28,17 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 ```
 
 4. **Download the COCONUT library** and place the CSV file in a `stored/` folder at the repository root:
-
+```
    bondmap/
    ├── source/
    │   └── bondmap.ipynb
    └── stored/
-   └── coconut_csv-05-2026.csv
-
-If your file is named differently or stored elsewhere, update the path in the notebook's library-loading cell:
-```python
-   library_df = load_smiles_library("../stored/coconut_csv-05-2026.csv")
+       └── coconut_csv-05-2026.csv
 ```
+>If your file is named differently or stored elsewhere, update the path in the notebook's library-loading cell:
+   ```python
+      library_df = load_smiles_library("../stored/coconut_csv-05-2026.csv")
+   ```
 
 5. **(Optional) Install Jupyter, if not already installed:**
 ```bash
