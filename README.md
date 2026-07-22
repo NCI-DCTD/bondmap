@@ -17,9 +17,9 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 
 2. **Create and activate a virtual environment:**
 ```bash
-   python -m venv bondmap
-   source bondmap/bin/activate      # macOS/Linux
-   bondmap\Scripts\activate         # Windows
+   python -m venv venv
+   source venv/bin/activate      # macOS/Linux
+   venv\Scripts\activate         # Windows
 ```
 
 3. **Install dependencies:**
