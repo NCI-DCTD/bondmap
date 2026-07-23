@@ -6,6 +6,7 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 - Python 3.11 or later
 - Local copy of the COCONUT library (https://coconut.naturalproducts.net/download)
   (developed/tested against the May 2026 CSV release but newer versions work)
+- Jupyter notebook for using test notebook
 
 ## Installation
 
@@ -47,6 +48,10 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 5. **(Optional) Install Jupyter, if not already installed:**
 ```bash
    pip install notebook
+```
+
+6. **Launch test notebook:**
+```bash
    jupyter notebook source/bondmap.ipynb
 ```
 
