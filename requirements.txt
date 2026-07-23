@@ -3,10 +3,12 @@ numpy
 pandas
 scipy
 fastparquet
+joblib
 
 # Machine Learning
-scikit-learn
-joblib
+scikit-learn==1.8  # DO NOT UPGRADE to 1.9.x — changes tree split/impurity
+                   # computation, causing measurable F1 regression on our
+                   # multioutput RandomForest.
 
 # Chemistry & Cheminformatics
 rdkit
