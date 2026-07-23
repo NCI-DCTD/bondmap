@@ -17,17 +17,21 @@ A Python-based cheminformatics pipeline designed to identify unknown compounds i
 
 2. **Create and activate a virtual environment:**
 ```bash
+   # 2.1 Create a virtual environment for installing requirements
    python -m venv venv           # or python3 depending on environment
+
+   # 2.2 Activate the environment for use
    source venv/bin/activate      # macOS/Linux
    venv\Scripts\activate         # Windows
 ```
 
 3. **Install dependencies:**
 ```bash
+   # make sure virtual environment is activated first
    pip install -r requirements.txt
 ```
 
-4. **Download the COCONUT library** and place the CSV file in a `stored/` folder at the repository root:
+4. **Download the COCONUT library** unzip and place the CSV file in the `stored/` folder at the repository root:
 ```
    bondmap/
    ├── source/

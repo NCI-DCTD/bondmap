@@ -127,7 +127,7 @@ class SpectIRmodeling:
         """Generates a text summary of the model's performance metrics."""
         # 1. Isolate the two overall rows using string matching
         df_samples = self.metrics[self.metrics['FG Label'].str.contains('Samples', case=False, na=False)]
-        df_macro = self.metrics[self.metrics['FG Label'].str.contains('Macro', case=False, na=False)]
+        df_macro = self.metrics[self.metrics['FG Label'].str.contains('Weighted', case=False, na=False)]
 
         # 2. Start building the summary string
         lines = [f"Final data shape: X={self.X.shape}, Y={self.Y.shape}"]
@@ -146,7 +146,7 @@ class SpectIRmodeling:
         if not df_macro.empty:
             m = df_macro.iloc[0]
             lines.append(
-                f"OOB Metrics (Per-Class / Macro):      "
+                f"OOB Metrics (Per-Class / Weighted):   "
                 f"Precision={m['Precision']:.3f}, "
                 f"Recall={m['Recall']:.3f}, "
                 f"F1-Score={m['F1-Score']:.3f}"
@@ -298,6 +298,15 @@ class SpectIRmodeling:
         feats = self._spectrum_to_regional_features(wn, ab)
         return self._predict_fg(feats.reshape(1, -1))
 
+    def set_threshold(self, threshold: float | Dict):
+
+        self.threshold = threshold
+
+        self.metrics = self._calculate_model_metrics()
+        self.confidence = self.metrics.set_index('FG Label')['Confidence'].to_dict()
+        self.summary = self._summary()
+        
+
     def _calculate_model_metrics(self) -> pd.DataFrame:
         """
         Calculates out-of-bag (OOB) classification metrics.
@@ -361,12 +370,12 @@ class SpectIRmodeling:
             "type": 1,
         })
 
-        macro_precision = precision_score(self.Y, y_pred_oob, average='macro', zero_division=0)
-        macro_recall = recall_score(self.Y, y_pred_oob, average='macro', zero_division=0)
-        macro_f1 = f1_score(self.Y, y_pred_oob, average='macro', zero_division=0)
+        macro_precision = precision_score(self.Y, y_pred_oob, average='weighted', zero_division=0)
+        macro_recall = recall_score(self.Y, y_pred_oob, average='weighted', zero_division=0)
+        macro_f1 = f1_score(self.Y, y_pred_oob, average='weighted', zero_division=0)
 
         fg_metrics.append({
-            "FG Label": "OVERALL (Macro Avg)",
+            "FG Label": "OVERALL (Weighted Avg)",
             "Support": total_support,
             "Precision": round(macro_precision, 3),
             "Recall": round(macro_recall, 3),
