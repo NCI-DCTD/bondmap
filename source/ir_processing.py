@@ -166,15 +166,16 @@ class Spectrum:
             np.ndarray: Calculated baseline.
         """
         L = len(self.abs_nobaseline)
-        D = diags([1, -2, 1], [0, 1, 2], shape=(L - 2, L))
+        D = diags([1, -2, 1], [0, 1, 2], shape=(L - 2, L), dtype=np.float64)
+        DTD = lam * (D.T @ D)  # precompute once, doesn't depend on w
         w = np.ones(L)
-        
+
         for _ in range(n_iter):
-            W = diags(w, 0)
-            A = (W + lam * D.T @ D).tocsc()
+            W = diags(w, 0, dtype=np.float64)
+            A = (W + DTD).tocsc()
             Z = spsolve(A, w * self.abs_nobaseline)
             w = np.where(self.abs_nobaseline > Z, p, 1 - p)
-            
+
         return Z
 
 
